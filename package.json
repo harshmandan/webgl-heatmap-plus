@@ -1,0 +1,26 @@
+{
+  "name": "web-gl-heatmap",
+  "version": "0.0.1",
+  "description": "Optimization of [Florian Boesch's](https://github.com/pyalot) excellent WebGL Heatmap project",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc && tsup",
+    "prepare": "husky install",
+    "pretty-quick": "pretty-quick --staged",
+    "tsc": "tsc",
+    "test": "ava"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ava": "^4.0.0",
+    "husky": "^7.0.4",
+    "prettier": "^2.5.1",
+    "pretty-quick": "^3.1.3",
+    "tsup": "^5.11.11",
+    "typescript": "^4.5.4"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
