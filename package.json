@@ -1,7 +1,7 @@
 {
   "name": "web-gl-heatmap",
   "version": "0.0.1",
-  "description": "Optimization of [Florian Boesch's](https://github.com/pyalot) excellent WebGL Heatmap project",
+  "description": "An optimization of [Florian Boesch's](https://github.com/pyalot) excellent WebGL Heatmap project",
   "author": "nwaughachukwuma<nwaughac@gmail.com>",
   "license": "MIT",
   "main": "build/index.js",
