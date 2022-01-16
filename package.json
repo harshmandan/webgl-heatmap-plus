@@ -2,7 +2,11 @@
   "name": "web-gl-heatmap",
   "version": "0.0.1",
   "description": "Optimization of [Florian Boesch's](https://github.com/pyalot) excellent WebGL Heatmap project",
+  "author": "nwaughachukwuma<nwaughac@gmail.com>",
+  "license": "MIT",
   "main": "build/index.js",
+  "type": "module",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc && tsup",
     "prepare": "husky install",
@@ -10,8 +14,20 @@
     "tsc": "tsc",
     "test": "ava"
   },
-  "author": "",
-  "license": "ISC",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs"
+    }
+  },
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "webgl",
+    "heatmap",
+    "webgl-heatmap"
+  ],
   "devDependencies": {
     "ava": "^4.0.0",
     "husky": "^7.0.4",
