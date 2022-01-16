@@ -1,23 +1,4 @@
-declare global {
-	interface WebGLRenderingContext {
-		getFloatExtension(spec: SpecType): FloatExtensionProps | null;
-	}
-	interface WebGL2RenderingContext {
-		getFloatExtension(spec: SpecType): FloatExtensionProps | null;
-	}
-}
-
-type SpecType = Record<string, any>;
-interface FloatExtensionProps {
-	filterable: boolean;
-	renderable: boolean;
-	type: number | null;
-	precision: string;
-	score: number;
-	texture?: boolean;
-	half?: boolean;
-	single?: boolean;
-}
+import type { SpecType, FloatExtensionProps } from "../types";
 
 export default function textureFloatShims() {
 	function createSourceCanvas() {

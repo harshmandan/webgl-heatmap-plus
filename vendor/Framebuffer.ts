@@ -1,3 +1,5 @@
+import Texture from "./Texture";
+
 export default class Framebuffer {
 	private buffer: WebGLFramebuffer | null;
 
@@ -30,7 +32,7 @@ export default class Framebuffer {
 		return this;
 	}
 
-	color(texture: { target: number; handle: WebGLTexture }) {
+	color(texture: Texture) {
 		this.gl.framebufferTexture2D(
 			this.gl.FRAMEBUFFER,
 			this.gl.COLOR_ATTACHMENT0,

@@ -7,8 +7,8 @@ export default class Texture {
 	private channels: number;
 	private type: number;
 	private chancount: number;
-	private target: number;
-	private handle: WebGLTexture | null;
+	public target: number;
+	public handle: WebGLTexture | null;
 	private width: number;
 	private height: number;
 
