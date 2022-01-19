@@ -7,4 +7,7 @@ declare global {
 	interface WebGL2RenderingContext {
 		getFloatExtension(spec: SpecType): FloatExtensionProps | null;
 	}
+	interface Window {
+		WebGLDebugUtils: any;
+	}
 }

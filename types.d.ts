@@ -9,3 +9,9 @@ export interface FloatExtensionProps {
 	half?: boolean;
 	single?: boolean;
 }
+export interface HeatPoint {
+	x: number;
+	y: number;
+	size: number | null;
+	intensity: number | null;
+}

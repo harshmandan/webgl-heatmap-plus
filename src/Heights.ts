@@ -7,8 +7,8 @@ export default class Heights {
 	private clampShader: Shader;
 	private multiplyShader: Shader;
 	private blurShader: Shader;
-	private nodeBack: Node;
-	private nodeFront: Node;
+	public nodeBack: Node;
+	public nodeFront: Node;
 	private vertexBuffer: WebGLBuffer | null;
 	private vertexSize: number;
 	private maxPointCount: number;
