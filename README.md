@@ -6,13 +6,13 @@ This is an optimization of [Florian Boesch's](https://github.com/pyalot) excelle
 
 ```bash
 # yarn
-yarn add web-gl-heatmap
+yarn add webgl-heatmap-plus
 
 # pnpm
-pnpm install web-gl-heatmap
+pnpm install webgl-heatmap-plus
 
 # npm
-npm install --save web-gl-heatmap
+npm install --save webgl-heatmap-plus
 ```
 
 Continue [here](https://github.com/pyalot/webgl-heatmap) for API and usage guide.
