@@ -22,10 +22,7 @@ export default function textureFloatShims() {
 
 	createSourceCanvas();
 
-	function checkFloatLinear(
-		gl: WebGLRenderingContext | WebGL2RenderingContext,
-		sourceType: number
-	) {
+	function checkFloatLinear(gl: WebGL2RenderingContext, sourceType: number) {
 		const program = gl.createProgram();
 		const vertexShader = gl.createShader(gl.VERTEX_SHADER);
 
@@ -130,10 +127,7 @@ export default function textureFloatShims() {
 		return result;
 	}
 
-	function checkTexture(
-		gl: WebGLRenderingContext | WebGL2RenderingContext,
-		targetType: number
-	) {
+	function checkTexture(gl: WebGL2RenderingContext, targetType: number) {
 		const target = gl.createTexture();
 		gl.bindTexture(gl.TEXTURE_2D, target);
 		gl.texImage2D(
@@ -156,10 +150,7 @@ export default function textureFloatShims() {
 		}
 	}
 
-	function checkColorBuffer(
-		gl: WebGLRenderingContext | WebGL2RenderingContext,
-		targetType: number
-	) {
+	function checkColorBuffer(gl: WebGL2RenderingContext, targetType: number) {
 		const target = gl.createTexture();
 		gl.bindTexture(gl.TEXTURE_2D, target);
 		gl.texImage2D(
@@ -202,11 +193,11 @@ export default function textureFloatShims() {
 	function checkSupport() {
 		let extobj: WEBGL_color_buffer_float | OES_texture_float_linear | null;
 		const canvas = document.createElement("canvas");
-		let gl: RenderingContext | null = null;
+		let gl: WebGL2RenderingContext | null = null;
 
 		try {
 			// check support for webgl2
-			gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
+			gl = canvas.getContext("webgl2");
 		} catch (_e) {}
 
 		if (gl != null) {
@@ -331,8 +322,7 @@ export default function textureFloatShims() {
 		}
 	}
 
-	const renderingContext =
-		window.WebGL2RenderingContext || window.WebGLRenderingContext;
+	const renderingContext = window.WebGL2RenderingContext;
 
 	if (renderingContext != null) {
 		checkSupport();
@@ -344,8 +334,8 @@ export default function textureFloatShims() {
 			unshimLookup[name] = true;
 		}
 
-		const getExtension = WebGLRenderingContext.prototype.getExtension;
-		WebGLRenderingContext.prototype.getExtension = function (name) {
+		const getExtension = WebGL2RenderingContext.prototype.getExtension;
+		WebGL2RenderingContext.prototype.getExtension = function (name) {
 			var extobj;
 			extobj = shimLookup[name];
 			if (extobj === void 0) {
@@ -360,8 +350,8 @@ export default function textureFloatShims() {
 		};
 
 		const getSupportedExtensions =
-			WebGLRenderingContext.prototype.getSupportedExtensions;
-		WebGLRenderingContext.prototype.getSupportedExtensions = function () {
+			WebGL2RenderingContext.prototype.getSupportedExtensions;
+		WebGL2RenderingContext.prototype.getSupportedExtensions = function () {
 			const supported = getSupportedExtensions.call(this);
 			const result = [];
 			if (supported) {

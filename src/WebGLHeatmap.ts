@@ -8,7 +8,7 @@ export default class WebGLHeatmap {
 	public width: number;
 	public height: number;
 	private canvas: HTMLCanvasElement;
-	private gl: WebGLRenderingContext | WebGL2RenderingContext | null;
+	private gl: WebGL2RenderingContext | null;
 	private shader: Shader;
 	private quad: WebGLBuffer | null;
 	private heights: Heights;
@@ -45,7 +45,7 @@ export default class WebGLHeatmap {
 			});
 
 			if (this.gl === null) {
-				this.gl = this.canvas.getContext("webgl", {
+				this.gl = this.canvas.getContext("webgl2", {
 					depth: false,
 					antialias: false,
 				});

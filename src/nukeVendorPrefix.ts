@@ -1,11 +1,11 @@
 export default function nukeVendorPrefix() {
-	if (window.WebGLRenderingContext != null) {
+	if (window.WebGL2RenderingContext != null) {
 		const vendors = ["WEBKIT", "MOZ", "MS", "O"];
 		const vendorRe = /^WEBKIT_(.*)|MOZ_(.*)|MS_(.*)|O_(.*)/;
 
-		const getExtension = WebGLRenderingContext.prototype.getExtension;
+		const getExtension = WebGL2RenderingContext.prototype.getExtension;
 
-		WebGLRenderingContext.prototype.getExtension = function (name) {
+		WebGL2RenderingContext.prototype.getExtension = function (name) {
 			const match = name.match(vendorRe);
 			if (match !== null) {
 				name = match[1];
@@ -28,9 +28,9 @@ export default function nukeVendorPrefix() {
 		};
 
 		const getSupportedExtensions =
-			WebGLRenderingContext.prototype.getSupportedExtensions;
+			WebGL2RenderingContext.prototype.getSupportedExtensions;
 
-		return (WebGLRenderingContext.prototype.getSupportedExtensions =
+		return (WebGL2RenderingContext.prototype.getSupportedExtensions =
 			function () {
 				const supported = getSupportedExtensions.call(this);
 				const result = [];

@@ -12,10 +12,7 @@ export default class Texture {
 	private width: number;
 	private height: number;
 
-	constructor(
-		private gl: WebGLRenderingContext | WebGL2RenderingContext,
-		params: Params | null
-	) {
+	constructor(private gl: WebGL2RenderingContext, params: Params | null) {
 		if (params == null) {
 			params = {};
 		}
@@ -26,7 +23,7 @@ export default class Texture {
 			(_ref != null
 				? _ref
 				: "rgba"
-			).toUpperCase() as keyof WebGLRenderingContextBase
+			).toUpperCase() as keyof WebGL2RenderingContextBase
 		] as number;
 
 		if (typeof params.type === "number") {
@@ -36,7 +33,7 @@ export default class Texture {
 				(_ref1 != null
 					? `${_ref1}`
 					: "unsigned_byte"
-				).toUpperCase() as keyof WebGLRenderingContextBase
+				).toUpperCase() as keyof WebGL2RenderingContextBase
 			] as number;
 		}
 

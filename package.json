@@ -1,42 +1,43 @@
 {
-  "name": "web-gl-heatmap",
-  "version": "0.0.1",
-  "description": "An optimization of [Florian Boesch's](https://github.com/pyalot) excellent WebGL Heatmap project",
-  "author": "nwaughachukwuma<nwaughac@gmail.com>",
-  "license": "MIT",
-  "main": "build/index.js",
-  "type": "module",
-  "types": "lib/index.d.ts",
-  "scripts": {
-    "build": "tsc && tsup",
-    "prepare": "husky install",
-    "pretty-quick": "pretty-quick --staged",
-    "tsc": "tsc",
-    "test": "ava"
-  },
-  "exports": {
-    ".": {
-      "import": "./lib/index.js",
-      "require": "./lib/index.cjs"
-    }
-  },
-  "files": [
-    "lib"
-  ],
-  "keywords": [
-    "webgl",
-    "heatmap",
-    "webgl-heatmap"
-  ],
-  "devDependencies": {
-    "ava": "^4.0.0",
-    "husky": "^7.0.4",
-    "prettier": "^2.5.1",
-    "pretty-quick": "^3.1.3",
-    "tsup": "^5.11.11",
-    "typescript": "^4.5.4"
-  },
-  "engines": {
-    "node": ">=12.0.0"
-  }
+	"name": "web-gl-heatmap",
+	"version": "0.0.1",
+	"description": "An optimization of [Florian Boesch's](https://github.com/pyalot) excellent WebGL Heatmap project",
+	"author": "nwaughachukwuma<nwaughac@gmail.com>",
+	"license": "MIT",
+	"main": "build/index.js",
+	"type": "module",
+	"types": "lib/index.d.ts",
+	"scripts": {
+		"build": "tsc && tsup",
+		"prepare": "husky install",
+		"pretty-quick": "pretty-quick --staged",
+		"tsc": "tsc",
+		"test": "ava"
+	},
+	"exports": {
+		".": {
+			"import": "./lib/index.js",
+			"require": "./lib/index.cjs"
+		}
+	},
+	"files": [
+		"lib"
+	],
+	"keywords": [
+		"webgl",
+		"webgl2",
+		"heatmap",
+		"webgl-heatmap"
+	],
+	"devDependencies": {
+		"ava": "^4.0.0",
+		"husky": "^7.0.4",
+		"prettier": "^2.5.1",
+		"pretty-quick": "^3.1.3",
+		"tsup": "^5.11.11",
+		"typescript": "^4.5.4"
+	},
+	"engines": {
+		"node": ">=12.0.0"
+	}
 }

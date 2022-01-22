@@ -3,7 +3,7 @@ import Texture from "./Texture";
 export default class Framebuffer {
 	private buffer: WebGLFramebuffer | null;
 
-	constructor(private gl: WebGLRenderingContext | WebGL2RenderingContext) {
+	constructor(private gl: WebGL2RenderingContext) {
 		this.buffer = this.gl.createFramebuffer();
 	}
 
