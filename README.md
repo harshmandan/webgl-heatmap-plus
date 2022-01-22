@@ -1,6 +1,6 @@
 # WebGL Heatmap
 
-This is an optimization of [Florian Boesch's](https://github.com/pyalot) excellent [WebGL Heatmap project](https://github.com/pyalot/webgl-heatmap) - it's now written in Typescript, built into esm and commonjs and released on npmjs.
+This is an optimization of [Florian Boesch's](https://github.com/pyalot) excellent [WebGL Heatmap project](https://github.com/pyalot/webgl-heatmap) - it's now written in Typescript, built into esm and commonjs and released on [npmjs](https://www.npmjs.com/package/webgl-heatmap-plus).
 
 ## Installation
 
