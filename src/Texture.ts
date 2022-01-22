@@ -12,10 +12,7 @@ export default class Texture {
 	private width: number;
 	private height: number;
 
-	constructor(
-		private gl: WebGLRenderingContext | WebGL2RenderingContext,
-		params: Params | null
-	) {
+	constructor(private gl: WebGLRenderingContext, params: Params | null) {
 		if (params == null) {
 			params = {};
 		}

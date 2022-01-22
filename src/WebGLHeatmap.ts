@@ -5,10 +5,10 @@ import { fragmentShaderBlit, vertexShaderBlit } from "./constants";
 import { HeatPoint } from "../types";
 
 export default class WebGLHeatmap {
-	private width: number;
-	private height: number;
+	public width: number;
+	public height: number;
 	private canvas: HTMLCanvasElement;
-	private gl: WebGLRenderingContext | WebGL2RenderingContext | null;
+	private gl: WebGLRenderingContext | null;
 	private shader: Shader;
 	private quad: WebGLBuffer | null;
 	private heights: Heights;
@@ -39,7 +39,7 @@ export default class WebGLHeatmap {
 		}
 
 		try {
-			this.gl = this.canvas.getContext("webgl2", {
+			this.gl = this.canvas.getContext("webgl", {
 				depth: false,
 				antialias: false,
 			});
@@ -229,7 +229,7 @@ export default class WebGLHeatmap {
 		x: number,
 		y: number,
 		size: number | null,
-		intensity: number | null
+		intensity: number | null = null
 	) {
 		return this.heights.addPoint(x, y, size, intensity);
 	}

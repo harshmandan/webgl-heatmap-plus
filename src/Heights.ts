@@ -19,7 +19,7 @@ export default class Heights {
 
 	constructor(
 		private heatmap: any,
-		private gl: WebGLRenderingContext | WebGL2RenderingContext,
+		private gl: WebGLRenderingContext,
 		private width: number,
 		private height: number
 	) {
