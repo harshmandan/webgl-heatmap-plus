@@ -7,7 +7,7 @@ export default class Shader {
 	private attribCache: Record<string, number>;
 
 	constructor(
-		private gl: WebGL2RenderingContext,
+		private gl: WebGLRenderingContext,
 		_arg: { vertex: any; fragment: any }
 	) {
 		let vertex = _arg.vertex;

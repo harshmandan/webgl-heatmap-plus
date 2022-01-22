@@ -4,7 +4,7 @@ declare global {
 	// interface WebGLRenderingContext {
 	// 	getFloatExtension(spec: SpecType): FloatExtensionProps | null;
 	// }
-	interface WebGL2RenderingContext {
+	interface WebGLRenderingContext {
 		getFloatExtension(spec: SpecType): FloatExtensionProps | null;
 	}
 	interface Window {

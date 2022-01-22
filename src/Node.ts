@@ -6,7 +6,7 @@ export default class Node {
 	private fbo: Framebuffer;
 
 	constructor(
-		private gl: WebGL2RenderingContext,
+		private gl: WebGLRenderingContext,
 		private width: number,
 		private height: number
 	) {
