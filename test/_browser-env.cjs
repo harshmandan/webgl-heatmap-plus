@@ -8,15 +8,8 @@ let init = false;
  *
  * @returns {CanvasRenderingContext2D | WebGLRenderingContext | null}
  */
-HTMLCanvasElement.prototype.getContext = (contextId, options = {}) => {
+HTMLCanvasElement.prototype.getContext = function () {
 	if (init) return;
 	init = true;
-
-	switch (contextId) {
-		case "2d":
-			return document.createElement("canvas").getContext("2d", options);
-		case "webgl":
-		default:
-			return document.createElement("canvas").getContext("webgl", options);
-	}
+	return document.createElement("canvas").getContext.call(this, ...arguments);
 };
