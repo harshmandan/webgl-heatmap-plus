@@ -1,9 +1,6 @@
-import type { SpecType, FloatExtensionProps } from "./types";
+import type { SpecType, FloatExtensionProps } from "./src/types";
 
 declare global {
-	// interface WebGLRenderingContext {
-	// 	getFloatExtension(spec: SpecType): FloatExtensionProps | null;
-	// }
 	interface WebGLRenderingContext {
 		getFloatExtension(spec: SpecType): FloatExtensionProps | null;
 	}

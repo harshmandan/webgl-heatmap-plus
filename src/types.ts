@@ -15,3 +15,12 @@ export interface HeatPoint {
 	size: number | null;
 	intensity: number | null;
 }
+
+export interface WebGLHeatmapOptions {
+	canvas?: HTMLCanvasElement;
+	width?: number;
+	height?: number;
+	intensityToAlpha?: boolean;
+	gradientTexture?: string | TexImageSource;
+	alphaRange?: [0, 1];
+}

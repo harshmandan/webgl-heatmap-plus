@@ -1,4 +1,4 @@
-import type { SpecType, FloatExtensionProps } from "../types";
+import type { SpecType, FloatExtensionProps } from "./types";
 
 export default function textureFloatShims() {
 	function createSourceCanvas() {

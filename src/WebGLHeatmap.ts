@@ -2,11 +2,10 @@ import Shader from "./Shader";
 import Heights from "./Heights";
 import Texture from "./Texture";
 import { fragmentShaderBlit, vertexShaderBlit } from "./constants";
-import { HeatPoint } from "../types";
-
+import { HeatPoint, WebGLHeatmapOptions } from "./types";
 export default class WebGLHeatmap {
-	public width: number;
-	public height: number;
+	public width?: number;
+	public height?: number;
 	private canvas: HTMLCanvasElement;
 	private gl: WebGLRenderingContext | null;
 	private shader: Shader;
@@ -14,7 +13,7 @@ export default class WebGLHeatmap {
 	private heights: Heights;
 	private gradientTexture: Texture | undefined;
 
-	constructor(_arg: Record<string, any>) {
+	constructor(_opt: WebGLHeatmapOptions = {}) {
 		let alphaEnd,
 			alphaRange,
 			alphaStart,
@@ -26,17 +25,12 @@ export default class WebGLHeatmap {
 			quad,
 			textureGradient: Texture | null;
 
-		const _ref = _arg != null ? _arg : {};
-		this.canvas = _ref.canvas;
-		this.width = _ref.width;
-		this.height = _ref.height;
-		intensityToAlpha = _ref.intensityToAlpha;
-		const gradientTexture = _ref.gradientTexture as string | TexImageSource;
-		alphaRange = _ref.alphaRange;
-
-		if (!this.canvas) {
-			this.canvas = document.createElement("canvas");
-		}
+		this.canvas = _opt.canvas || document.createElement("canvas");
+		this.width = _opt.width;
+		this.height = _opt.height;
+		intensityToAlpha = _opt.intensityToAlpha;
+		const gradientTexture = _opt.gradientTexture as string | TexImageSource;
+		alphaRange = _opt.alphaRange;
 
 		try {
 			this.gl = this.canvas.getContext("webgl", {
