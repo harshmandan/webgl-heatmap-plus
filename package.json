@@ -17,7 +17,7 @@
 		"prepare": "husky install",
 		"pretty-quick": "pretty-quick --staged",
 		"tsc": "tsc",
-		"test": "ava"
+		"test": "tsd && ava"
 	},
 	"exports": {
 		".": {
@@ -38,10 +38,14 @@
 		"husky": "^7.0.4",
 		"prettier": "^2.5.1",
 		"pretty-quick": "^3.1.3",
+		"tsd": "^0.19.1",
 		"tsup": "^5.11.11",
 		"typescript": "^4.5.4"
 	},
 	"engines": {
 		"node": ">=12.0.0"
+	},
+	"tsd": {
+		"directory": "./tsd"
 	}
 }
