@@ -1,12 +1,12 @@
 {
 	"name": "webgl-heatmap-plus",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "An optimization of @pyalot excellent WebGL Heatmap project - https://github.com/pyalot/webgl-heatmap",
 	"author": "nwaughachukwuma<nwaughac@gmail.com>",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/nwaughachukwuma/ws-rekanet.git"
+		"url": "git+https://github.com/nwaughachukwuma/webgl-heatmap-plus.git"
 	},
 	"main": "lib/index.js",
 	"type": "module",
