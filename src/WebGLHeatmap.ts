@@ -68,7 +68,7 @@ export default class WebGLHeatmap {
 			}
 		}
 
-		if (this.gl === null) {
+		if (this.gl == null) {
 			throw "WebGL not supported";
 		}
 

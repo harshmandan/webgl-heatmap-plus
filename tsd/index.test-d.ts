@@ -2,10 +2,10 @@ import { expectType } from "tsd";
 import "../declaration";
 import WebGLHeatmap from "../src/WebGLHeatmap";
 import Node from "../src/Node";
-import createHeatmap from "../index";
+import createWebGLHeatmap from "../index";
 
 const canvas = document.createElement("canvas");
-const heatmap = createHeatmap({ canvas, width: 100, height: 100 });
+const heatmap = createWebGLHeatmap({ canvas, width: 100, height: 100 });
 
 expectType<WebGLHeatmap>(heatmap);
 expectType<number>(heatmap.addPoint(0, 0, 1));
