@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-	sourcemap: false,
+	sourcemap: true,
 	clean: true,
 	minify: true,
 	entryPoints: ["index.ts"],
