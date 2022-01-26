@@ -61,8 +61,8 @@ export default class Texture {
 		return this.gl.deleteTexture(this.handle);
 	}
 
-	bind(unit: string | number) {
-		if (unit == null || typeof unit !== "number") {
+	bind(unit: number) {
+		if (unit == null || unit < 0) {
 			unit = 0;
 		}
 		if (unit > 15) {
@@ -114,6 +114,16 @@ export default class Texture {
 			this.target,
 			this.gl.TEXTURE_MIN_FILTER,
 			this.gl.LINEAR
+		);
+		this.gl.texParameteri(
+			this.target,
+			this.gl.TEXTURE_WRAP_S,
+			this.gl.CLAMP_TO_EDGE
+		);
+		this.gl.texParameteri(
+			this.target,
+			this.gl.TEXTURE_WRAP_T,
+			this.gl.CLAMP_TO_EDGE
 		);
 		return this;
 	}

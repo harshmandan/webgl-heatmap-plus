@@ -29,7 +29,7 @@ export default class Node {
 		return this.fbo.bind();
 	}
 
-	bind(unit: string | number) {
+	bind(unit: number) {
 		return this.texture.bind(unit);
 	}
 
