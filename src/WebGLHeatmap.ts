@@ -4,8 +4,8 @@ import Texture from "./Texture";
 import { fragmentShaderBlit, vertexShaderBlit } from "./constants";
 import { HeatPoint, WebGLHeatmapOptions } from "./types";
 export default class WebGLHeatmap {
-	public width?: number;
-	public height?: number;
+	public width: number;
+	public height: number;
 	private canvas: HTMLCanvasElement;
 	private gl: WebGLRenderingContext | null;
 	private shader: Shader;
@@ -26,8 +26,8 @@ export default class WebGLHeatmap {
 			textureGradient: Texture | null;
 
 		this.canvas = _opt.canvas || document.createElement("canvas");
-		this.width = _opt.width;
-		this.height = _opt.height;
+		this.width = _opt.width || this.canvas.offsetWidth || 2;
+		this.height = _opt.height || this.canvas.offsetHeight || 2;
 		intensityToAlpha = _opt.intensityToAlpha;
 		const gradientTexture = _opt.gradientTexture as string | TexImageSource;
 		alphaRange = _opt.alphaRange;
@@ -137,13 +137,6 @@ export default class WebGLHeatmap {
 					output +
 					"\n\nvoid main(){\n    float intensity = smoothstep(0.0, 1.0, texture2D(source, texcoord).r);\n    vec3 color = getColor(intensity);\n    gl_FragColor = alphaFun(color, intensity);\n}"),
 		});
-		if (this.width == null) {
-			this.width = this.canvas.offsetWidth || 2;
-		}
-		if (this.height == null) {
-			this.height = this.canvas.offsetHeight || 2;
-		}
-
 		this.canvas.width = this.width;
 		this.canvas.height = this.height;
 
