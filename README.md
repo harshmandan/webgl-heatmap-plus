@@ -1,12 +1,13 @@
-# WebGL Heatmap
+# WebGL Heatmap Plus
 
-This is an optimization of [Florian Boesch's](https://github.com/pyalot) excellent [WebGL Heatmap project](https://github.com/pyalot/webgl-heatmap) - it's now written in Typescript, built into esm and commonjs and released on [npmjs](https://www.npmjs.com/package/webgl-heatmap-plus).
+This is an optimization of [Florian Boesch's](https://github.com/pyalot) [WebGL Heatmap project](https://github.com/pyalot/webgl-heatmap) - it's now written in Typescript, built into esm and commonjs and released on [npmjs](https://www.npmjs.com/package/webgl-heatmap-plus).
 
 ## Motivation
 
-1. Make it modular and thus maintainable
-2. Rewrite it in Typescript - leveraging all the goodies it provides
-3. Eventually upgrade to WebGL 2
+1. Remove references to `experimental-webgl`.
+2. Make it modular and thus maintainable
+3. Rewrite it in Typescript
+4. Eventually upgrade to WebGL 2
 
 ## Installation
 

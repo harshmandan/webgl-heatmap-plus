@@ -1,7 +1,7 @@
 {
 	"name": "webgl-heatmap-plus",
 	"version": "0.0.8",
-	"description": "An optimization of @pyalot excellent WebGL Heatmap project - https://github.com/pyalot/webgl-heatmap",
+	"description": "An optimization of @pyalot WebGL Heatmap project - https://github.com/pyalot/webgl-heatmap",
 	"author": "nwaughachukwuma<nwaughac@gmail.com>",
 	"license": "MIT",
 	"repository": {
