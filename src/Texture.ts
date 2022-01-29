@@ -115,16 +115,6 @@ export default class Texture {
 			this.gl.TEXTURE_MIN_FILTER,
 			this.gl.LINEAR
 		);
-		this.gl.texParameteri(
-			this.target,
-			this.gl.TEXTURE_WRAP_S,
-			this.gl.CLAMP_TO_EDGE
-		);
-		this.gl.texParameteri(
-			this.target,
-			this.gl.TEXTURE_WRAP_T,
-			this.gl.CLAMP_TO_EDGE
-		);
 		return this;
 	}
 
