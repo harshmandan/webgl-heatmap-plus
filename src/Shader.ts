@@ -8,11 +8,8 @@ export default class Shader {
 
 	constructor(
 		private gl: WebGLRenderingContext,
-		_arg: { vertex: any; fragment: any }
+		options: { vertex: any; fragment: any }
 	) {
-		let vertex = _arg.vertex;
-		let fragment = _arg.fragment;
-
 		this.program = this.gl.createProgram();
 		this.vs = this.gl.createShader(this.gl.VERTEX_SHADER);
 		this.fs = this.gl.createShader(this.gl.FRAGMENT_SHADER);
@@ -20,12 +17,12 @@ export default class Shader {
 		if (this.program) {
 			if (this.vs) {
 				this.gl.attachShader(this.program, this.vs);
-				this.compileShader(this.vs, vertex);
+				this.compileShader(this.vs, options.vertex);
 			}
 
 			if (this.fs) {
 				this.gl.attachShader(this.program, this.fs);
-				this.compileShader(this.fs, fragment);
+				this.compileShader(this.fs, options.fragment);
 			}
 		}
 
@@ -37,7 +34,7 @@ export default class Shader {
 
 	attribLocation(name: string) {
 		let location = this.attribCache[name];
-		if (this.program && location === void 0) {
+		if (this.program && typeof location === "undefined") {
 			location = this.attribCache[name] = this.gl.getAttribLocation(
 				this.program,
 				name
@@ -70,7 +67,7 @@ export default class Shader {
 
 	uniformLoc(name: string) {
 		let location = this.uniform_cache[name];
-		if (this.program && location === void 0) {
+		if (this.program && typeof location === "undefined") {
 			location = this.gl.getUniformLocation(this.program, name);
 			this.uniform_cache[name] = location;
 		}

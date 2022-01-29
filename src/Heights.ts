@@ -23,8 +23,6 @@ export default class Heights {
 		private width: number,
 		private height: number
 	) {
-		var i, _i, _ref;
-
 		this.shader = new Shader(this.gl, {
 			vertex:
 				"attribute vec4 position, intensity;\nvarying vec2 off, dim;\nvarying float vIntensity;\nuniform vec2 viewport;\n\nvoid main(){\n    dim = abs(position.zw);\n    off = position.zw;\n    vec2 pos = position.xy + position.zw;\n    vIntensity = intensity.x;\n    gl_Position = vec4((pos/viewport)*2.0-1.0, 0.0, 1.0);\n}",
@@ -58,10 +56,13 @@ export default class Heights {
 			this.maxPointCount * this.vertexSize * 6
 		);
 		this.vertexBufferViews = [];
+		let _i = 0;
+		let _ref = this.maxPointCount;
+
 		for (
-			i = _i = 0, _ref = this.maxPointCount;
-			0 <= _ref ? _i < _ref : _i > _ref;
-			i = 0 <= _ref ? ++_i : --_i
+			let i = _i;
+			_ref >= 0 ? _i < _ref : _i > _ref;
+			i = _ref >= 0 ? ++_i : --_i
 		) {
 			this.vertexBufferViews.push(
 				new Float32Array(
@@ -83,44 +84,44 @@ export default class Heights {
 	}
 
 	update() {
-		if (this.pointCount > 0) {
-			this.gl.enable(this.gl.BLEND);
-			this.nodeFront.use();
-			this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
-			this.gl.bufferData(
-				this.gl.ARRAY_BUFFER,
-				this.vertexBufferViews[this.pointCount],
-				this.gl.STREAM_DRAW
-			);
-			const positionLoc = this.shader.attribLocation("position");
-			const intensityLoc = this.shader.attribLocation("intensity");
-			this.gl.enableVertexAttribArray(1);
-			this.gl.vertexAttribPointer(
-				positionLoc,
-				4,
-				this.gl.FLOAT,
-				false,
-				8 * 4,
-				0 * 4
-			);
-			this.gl.vertexAttribPointer(
-				intensityLoc,
-				4,
-				this.gl.FLOAT,
-				false,
-				8 * 4,
-				4 * 4
-			);
+		if (this.pointCount <= 0) return;
 
-			this.shader.use().vec2("viewport", this.width, this.height);
-			this.gl.drawArrays(this.gl.TRIANGLES, 0, this.pointCount * 6);
-			this.gl.disableVertexAttribArray(1);
-			this.pointCount = 0;
-			this.bufferIndex = 0;
-			this.nodeFront.end();
+		this.gl.enable(this.gl.BLEND);
+		this.nodeFront.use();
+		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
+		this.gl.bufferData(
+			this.gl.ARRAY_BUFFER,
+			this.vertexBufferViews[this.pointCount],
+			this.gl.STREAM_DRAW
+		);
+		const positionLoc = this.shader.attribLocation("position");
+		const intensityLoc = this.shader.attribLocation("intensity");
+		this.gl.enableVertexAttribArray(1);
+		this.gl.vertexAttribPointer(
+			positionLoc,
+			4,
+			this.gl.FLOAT,
+			false,
+			8 * 4,
+			0 * 4
+		);
+		this.gl.vertexAttribPointer(
+			intensityLoc,
+			4,
+			this.gl.FLOAT,
+			false,
+			8 * 4,
+			4 * 4
+		);
 
-			return this.gl.disable(this.gl.BLEND);
-		}
+		this.shader.use().vec2("viewport", this.width, this.height);
+		this.gl.drawArrays(this.gl.TRIANGLES, 0, this.pointCount * 6);
+		this.gl.disableVertexAttribArray(1);
+		this.pointCount = 0;
+		this.bufferIndex = 0;
+		this.nodeFront.end();
+
+		return this.gl.disable(this.gl.BLEND);
 	}
 
 	clear() {
