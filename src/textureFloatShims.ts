@@ -319,31 +319,22 @@ export default function textureFloatShims() {
 		}
 	}
 
-	const renderingContext = window.WebGLRenderingContext;
-
-	if (renderingContext != null) {
+	if (window.WebGLRenderingContext != null) {
 		checkSupport();
-		const unshimLookup: Record<string, any> = {};
 
-		let name;
-		for (let _i = 0, _len = unshimExtensions.length; _i < _len; _i++) {
-			name = unshimExtensions[_i];
-			unshimLookup[name] = true;
-		}
+		const unshimLookup = unshimExtensions.reduce(
+			(acc, cur) => ({ ...acc, [cur]: true }),
+			{} as Record<string, any>
+		);
 
 		const getExtension = WebGLRenderingContext.prototype.getExtension;
 		WebGLRenderingContext.prototype.getExtension = function (name) {
-			var extobj;
-			extobj = shimLookup[name];
-			if (extobj === void 0) {
-				if (unshimLookup[name]) {
-					return null;
-				} else {
-					return getExtension.call(this, name);
-				}
-			} else {
-				return extobj;
-			}
+			const extobj = shimLookup[name];
+			return extobj == null
+				? unshimLookup[name]
+					? null
+					: getExtension.call(this, name)
+				: extobj;
 		};
 
 		const getSupportedExtensions =
@@ -352,15 +343,12 @@ export default function textureFloatShims() {
 			const supported = getSupportedExtensions.call(this);
 			const result = [];
 			if (supported) {
-				let extension;
-				for (let _j = 0, _len1 = supported.length; _j < _len1; _j++) {
-					extension = supported[_j];
-					if (unshimLookup[extension] === void 0) {
+				for (const extension of supported) {
+					if (unshimLookup[extension] == null) {
 						result.push(extension);
 					}
 				}
-				for (let _k = 0, _len2 = shimExtensions.length; _k < _len2; _k++) {
-					extension = shimExtensions[_k];
+				for (const extension of shimExtensions) {
 					if (result.indexOf(extension) < 0) {
 						result.push(extension);
 					}
@@ -370,119 +358,109 @@ export default function textureFloatShims() {
 			return result;
 		};
 
-		return (renderingContext.prototype.getFloatExtension = function (
-			spec: SpecType
-		) {
-			if (spec.prefer == null) {
-				spec.prefer = ["half"];
-			}
-			if (spec.require == null) {
-				spec.require = [];
-			}
-			if (spec.throws == null) {
-				spec.throws = true;
-			}
+		return (window.WebGLRenderingContext.prototype.getFloatExtension =
+			function (spec: SpecType) {
+				if (spec.prefer == null) {
+					spec.prefer = ["half"];
+				}
+				if (spec.require == null) {
+					spec.require = [];
+				}
+				if (spec.throws == null) {
+					spec.throws = true;
+				}
 
-			const singleTexture = this.getExtension("OES_texture_float");
-			const halfTexture = this.getExtension("OES_texture_half_float");
-			const singleFramebuffer = this.getExtension("WEBGL_color_buffer_float");
-			const halfFramebuffer = this.getExtension("EXT_color_buffer_half_float");
-			const singleLinear = this.getExtension("OES_texture_float_linear");
-			const halfLinear = this.getExtension("OES_texture_half_float_linear");
-			const single: FloatExtensionProps = {
-				texture: singleTexture !== null,
-				filterable: singleLinear !== null,
-				renderable: singleFramebuffer !== null,
-				score: 0,
-				precision: "single",
-				half: false,
-				single: true,
-				type: this.FLOAT,
-			};
-			let _ref;
-			const half: FloatExtensionProps = {
-				texture: halfTexture !== null,
-				filterable: halfLinear !== null,
-				renderable: halfFramebuffer !== null,
-				score: 0,
-				precision: "half",
-				half: true,
-				single: false,
-				type:
-					(_ref = halfTexture != null ? halfTexture.HALF_FLOAT_OES : void 0) !=
-					null
-						? _ref
-						: null,
-			};
-			const candidates: Array<typeof single> = [];
-			if (single.texture) {
-				candidates.push(single);
-			}
-			if (half.texture) {
-				candidates.push(half);
-			}
-			const result = [];
+				const singleTexture = this.getExtension("OES_texture_float");
+				const halfTexture = this.getExtension("OES_texture_half_float");
+				const singleFramebuffer = this.getExtension("WEBGL_color_buffer_float");
+				const halfFramebuffer = this.getExtension(
+					"EXT_color_buffer_half_float"
+				);
+				const singleLinear = this.getExtension("OES_texture_float_linear");
+				const halfLinear = this.getExtension("OES_texture_half_float_linear");
+				const single: FloatExtensionProps = {
+					texture: singleTexture !== null,
+					filterable: singleLinear !== null,
+					renderable: singleFramebuffer !== null,
+					score: 0,
+					precision: "single",
+					half: false,
+					single: true,
+					type: this.FLOAT,
+				};
+				let _ref;
+				const half: FloatExtensionProps = {
+					texture: halfTexture !== null,
+					filterable: halfLinear !== null,
+					renderable: halfFramebuffer !== null,
+					score: 0,
+					precision: "half",
+					half: true,
+					single: false,
+					type:
+						(_ref =
+							halfTexture != null ? halfTexture.HALF_FLOAT_OES : void 0) != null
+							? _ref
+							: null,
+				};
+				const candidates: Array<typeof single> = [];
+				if (single.texture) {
+					candidates.push(single);
+				}
+				if (half.texture) {
+					candidates.push(half);
+				}
+				const result = [];
 
-			for (let _j = 0, _len1 = candidates.length; _j < _len1; _j++) {
-				const candidate = candidates[_j];
-				let use = true;
-				const _ref1 = spec.require;
+				for (const candidate of candidates) {
+					let use = true;
+					const _ref1: Array<keyof typeof single> = spec.require;
 
-				for (let _k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
-					const name = _ref1[_k] as keyof typeof single;
-					if (candidate[name] === false) {
-						use = false;
+					for (const name of _ref1) {
+						if (candidate[name] === false) {
+							use = false;
+						}
+					}
+					if (use) {
+						result.push(candidate);
 					}
 				}
-				if (use) {
-					result.push(candidate);
-				}
-			}
 
-			for (let _l = 0, _len3 = result.length; _l < _len3; _l++) {
-				const candidate = result[_l];
-				const _ref2 = spec.prefer;
+				for (const [j, candidate] of result.entries()) {
+					const _ref2: Array<keyof typeof single> = spec.prefer;
 
-				let _m;
-				for (let i = (_m = 0), _len4 = _ref2.length; _m < _len4; i = ++_m) {
-					const preference = _ref2[i] as keyof typeof single;
-					const importance = Math.pow(2, spec.prefer.length - i - 1);
-
-					if (candidate[preference]) {
-						candidate.score += importance;
+					for (const [i, preference] of _ref2.entries()) {
+						const importance = Math.pow(2, spec.prefer.length - i - 1);
+						if (candidate[preference]) {
+							candidate.score += importance;
+							result[j] = candidate;
+						}
 					}
 				}
-			}
 
-			result.sort((a, b) => {
-				if (a.score === b.score) {
-					return 0;
-				} else if (a.score < b.score) {
-					return 1;
+				result.sort((a, b) =>
+					a.score === b.score ? 0 : a.score < b.score ? 1 : -1
+				);
+
+				if (!result.length) {
+					if (spec.throws) {
+						throw (
+							"No floating point texture support that is " +
+							spec.require.join(", ")
+						);
+					} else {
+						return null;
+					}
 				} else {
-					return -1;
+					const finalResult = result[0];
+					return {
+						filterable: finalResult.filterable,
+						renderable: finalResult.renderable,
+						type: finalResult.type,
+						precision: finalResult.precision,
+						score: finalResult.score,
+					};
 				}
 			});
-
-			if (result.length === 0) {
-				if (spec.throws) {
-					throw (
-						"No floating point texture support that is " +
-						spec.require.join(", ")
-					);
-				} else {
-					return null;
-				}
-			} else {
-				const chosenResult = result[0];
-				return {
-					filterable: chosenResult.filterable,
-					renderable: chosenResult.renderable,
-					type: chosenResult.type,
-					precision: chosenResult.precision,
-					score: chosenResult.score,
-				};
-			}
-		});
 	}
 }
