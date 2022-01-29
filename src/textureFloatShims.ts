@@ -20,7 +20,7 @@ export default function textureFloatShims() {
 		return canvas;
 	}
 
-	// createSourceCanvas();s
+	// createSourceCanvas();
 
 	function checkFloatLinear(gl: WebGLRenderingContext, sourceType: number) {
 		const program = gl.createProgram();
@@ -43,11 +43,11 @@ export default function textureFloatShims() {
 
 		if (fragmentShader) {
 			gl.attachShader(program, fragmentShader);
+
 			gl.shaderSource(
 				fragmentShader,
 				"uniform sampler2D source;\nvoid main(){\n    gl_FragColor = texture2D(source, vec2(1.0, 1.0));\n}"
 			);
-
 			gl.compileShader(fragmentShader);
 			if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
 				throw gl.getShaderInfoLog(fragmentShader);
@@ -75,8 +75,6 @@ export default function textureFloatShims() {
 		);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
 		const framebuffer = gl.createFramebuffer();
 		gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
@@ -94,8 +92,6 @@ export default function textureFloatShims() {
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, sourceType, sourceCanvas);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
 		const vertices = new Float32Array([
 			1, 1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
@@ -166,7 +162,6 @@ export default function textureFloatShims() {
 			targetType,
 			null
 		);
-
 		const framebuffer = gl.createFramebuffer();
 		gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 		gl.framebufferTexture2D(
@@ -201,7 +196,7 @@ export default function textureFloatShims() {
 			gl = canvas.getContext("webgl");
 		} catch (_e) {}
 
-		if (!gl) {
+		if (gl == null) {
 			console.debug("WebGL not supported");
 			return;
 		}
@@ -220,28 +215,36 @@ export default function textureFloatShims() {
 		}
 
 		if (singleFloatTexturing) {
-			if (checkColorBuffer(gl, gl.FLOAT)) {
+			// 1. check color buffer support
+			extobj = gl.getExtension("WEBGL_color_buffer_float");
+			const colorBufferFloat = checkColorBuffer(gl, gl.FLOAT);
+
+			if (extobj === null && colorBufferFloat) {
+				shimLookup.WEBGL_color_buffer_float = {
+					shim: true,
+					RGBA32F_EXT: 0x8814,
+					RGB32F_EXT: 0x8815,
+					FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: 0x8211,
+					UNSIGNED_NORMALIZED_EXT: 0x8c17,
+				};
+			}
+
+			if (colorBufferFloat) {
 				shimExtensions.push("WEBGL_color_buffer_float");
-				extobj = gl.getExtension("WEBGL_color_buffer_float");
-				if (extobj === null) {
-					shimLookup["WEBGL_color_buffer_float"] = {
-						shim: true,
-						RGBA32F_EXT: 0x8814,
-						RGB32F_EXT: 0x8815,
-						FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: 0x8211,
-						UNSIGNED_NORMALIZED_EXT: 0x8c17,
-					};
-				}
 			} else {
 				unshimExtensions.push("WEBGL_color_buffer_float");
 			}
 
-			if (checkFloatLinear(gl, gl.FLOAT)) {
+			// 2. check float linear filtering
+			extobj = gl.getExtension("OES_texture_float_linear");
+			const floatLinear = checkFloatLinear(gl, gl.FLOAT);
+
+			if (extobj === null && floatLinear) {
+				shimLookup["OES_texture_float_linear"] = { shim: true };
+			}
+
+			if (floatLinear) {
 				shimExtensions.push("OES_texture_float_linear");
-				extobj = gl.getExtension("OES_texture_float_linear");
-				if (extobj === null) {
-					shimLookup["OES_texture_float_linear"] = { shim: true };
-				}
 			} else {
 				unshimExtensions.push("OES_texture_float_linear");
 			}
@@ -272,50 +275,75 @@ export default function textureFloatShims() {
 		}
 
 		if (halfFloatTexturing && halfFloatExt) {
-			if (checkColorBuffer(gl, halfFloatExt.HALF_FLOAT_OES)) {
+			extobj = gl.getExtension("EXT_color_buffer_half_float");
+			const colorBufferHalfFloat = checkColorBuffer(
+				gl,
+				halfFloatExt.HALF_FLOAT_OES
+			);
+
+			if (extobj === null && colorBufferHalfFloat) {
+				shimLookup["EXT_color_buffer_half_float"] = {
+					shim: true,
+					RGBA16F_EXT: 0x881a,
+					RGB16F_EXT: 0x881b,
+					FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: 0x8211,
+					UNSIGNED_NORMALIZED_EXT: 0x8c17,
+				};
+			}
+
+			if (colorBufferHalfFloat) {
 				shimExtensions.push("EXT_color_buffer_half_float");
-				extobj = gl.getExtension("EXT_color_buffer_half_float");
-				if (extobj === null) {
-					shimLookup["EXT_color_buffer_half_float"] = {
-						shim: true,
-						RGBA16F_EXT: 0x881a,
-						RGB16F_EXT: 0x881b,
-						FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: 0x8211,
-						UNSIGNED_NORMALIZED_EXT: 0x8c17,
-					};
-				}
 			} else {
 				unshimExtensions.push("EXT_color_buffer_half_float");
 			}
 
-			if (checkFloatLinear(gl, halfFloatExt.HALF_FLOAT_OES)) {
-				const pushValue = shimExtensions.push("OES_texture_half_float_linear");
-				extobj = gl.getExtension("OES_texture_half_float_linear");
-				return extobj === null
-					? (shimLookup.OES_texture_half_float_linear = { shim: true })
-					: pushValue;
+			//----
+			extobj = gl.getExtension("OES_texture_half_float_linear");
+			const floatLinearHalfFloat = checkFloatLinear(
+				gl,
+				halfFloatExt.HALF_FLOAT_OES
+			);
+
+			if (extobj === null && floatLinearHalfFloat) {
+				shimExtensions.push("OES_texture_half_float_linear");
+				return (shimLookup.OES_texture_half_float_linear = {
+					shim: true,
+				});
+			}
+
+			if (floatLinearHalfFloat) {
+				return shimExtensions.push("OES_texture_half_float_linear");
 			} else {
 				return unshimExtensions.push("OES_texture_half_float_linear");
 			}
 		}
 	}
 
-	if (window.WebGLRenderingContext != null) {
-		checkSupport();
+	const renderingContext = window.WebGLRenderingContext;
 
-		const unshimLookup = unshimExtensions.reduce(
-			(acc, cur) => ({ ...acc, [cur]: true }),
-			{} as Record<string, any>
-		);
+	if (renderingContext != null) {
+		checkSupport();
+		const unshimLookup: Record<string, any> = {};
+
+		let name;
+		for (let _i = 0, _len = unshimExtensions.length; _i < _len; _i++) {
+			name = unshimExtensions[_i];
+			unshimLookup[name] = true;
+		}
 
 		const getExtension = WebGLRenderingContext.prototype.getExtension;
 		WebGLRenderingContext.prototype.getExtension = function (name) {
-			const extobj = shimLookup[name];
-			return extobj == null
-				? unshimLookup[name]
-					? null
-					: getExtension.call(this, name)
-				: extobj;
+			var extobj;
+			extobj = shimLookup[name];
+			if (extobj === void 0) {
+				if (unshimLookup[name]) {
+					return null;
+				} else {
+					return getExtension.call(this, name);
+				}
+			} else {
+				return extobj;
+			}
 		};
 
 		const getSupportedExtensions =
@@ -324,12 +352,15 @@ export default function textureFloatShims() {
 			const supported = getSupportedExtensions.call(this);
 			const result = [];
 			if (supported) {
-				for (const extension of supported) {
-					if (unshimLookup[extension] == null) {
+				let extension;
+				for (let _j = 0, _len1 = supported.length; _j < _len1; _j++) {
+					extension = supported[_j];
+					if (unshimLookup[extension] === void 0) {
 						result.push(extension);
 					}
 				}
-				for (const extension of shimExtensions) {
+				for (let _k = 0, _len2 = shimExtensions.length; _k < _len2; _k++) {
+					extension = shimExtensions[_k];
 					if (result.indexOf(extension) < 0) {
 						result.push(extension);
 					}
@@ -339,109 +370,119 @@ export default function textureFloatShims() {
 			return result;
 		};
 
-		return (window.WebGLRenderingContext.prototype.getFloatExtension =
-			function (spec: SpecType) {
-				if (spec.prefer == null) {
-					spec.prefer = ["half"];
-				}
-				if (spec.require == null) {
-					spec.require = [];
-				}
-				if (spec.throws == null) {
-					spec.throws = true;
-				}
+		return (renderingContext.prototype.getFloatExtension = function (
+			spec: SpecType
+		) {
+			if (spec.prefer == null) {
+				spec.prefer = ["half"];
+			}
+			if (spec.require == null) {
+				spec.require = [];
+			}
+			if (spec.throws == null) {
+				spec.throws = true;
+			}
 
-				const singleTexture = this.getExtension("OES_texture_float");
-				const halfTexture = this.getExtension("OES_texture_half_float");
-				const singleFramebuffer = this.getExtension("WEBGL_color_buffer_float");
-				const halfFramebuffer = this.getExtension(
-					"EXT_color_buffer_half_float"
-				);
-				const singleLinear = this.getExtension("OES_texture_float_linear");
-				const halfLinear = this.getExtension("OES_texture_half_float_linear");
-				const single: FloatExtensionProps = {
-					texture: singleTexture !== null,
-					filterable: singleLinear !== null,
-					renderable: singleFramebuffer !== null,
-					score: 0,
-					precision: "single",
-					half: false,
-					single: true,
-					type: this.FLOAT,
-				};
-				let _ref;
-				const half: FloatExtensionProps = {
-					texture: halfTexture !== null,
-					filterable: halfLinear !== null,
-					renderable: halfFramebuffer !== null,
-					score: 0,
-					precision: "half",
-					half: true,
-					single: false,
-					type:
-						(_ref =
-							halfTexture != null ? halfTexture.HALF_FLOAT_OES : void 0) != null
-							? _ref
-							: null,
-				};
-				const candidates: Array<typeof single> = [];
-				if (single.texture) {
-					candidates.push(single);
-				}
-				if (half.texture) {
-					candidates.push(half);
-				}
-				const result = [];
+			const singleTexture = this.getExtension("OES_texture_float");
+			const halfTexture = this.getExtension("OES_texture_half_float");
+			const singleFramebuffer = this.getExtension("WEBGL_color_buffer_float");
+			const halfFramebuffer = this.getExtension("EXT_color_buffer_half_float");
+			const singleLinear = this.getExtension("OES_texture_float_linear");
+			const halfLinear = this.getExtension("OES_texture_half_float_linear");
+			const single: FloatExtensionProps = {
+				texture: singleTexture !== null,
+				filterable: singleLinear !== null,
+				renderable: singleFramebuffer !== null,
+				score: 0,
+				precision: "single",
+				half: false,
+				single: true,
+				type: this.FLOAT,
+			};
+			let _ref;
+			const half: FloatExtensionProps = {
+				texture: halfTexture !== null,
+				filterable: halfLinear !== null,
+				renderable: halfFramebuffer !== null,
+				score: 0,
+				precision: "half",
+				half: true,
+				single: false,
+				type:
+					(_ref = halfTexture != null ? halfTexture.HALF_FLOAT_OES : void 0) !=
+					null
+						? _ref
+						: null,
+			};
+			const candidates: Array<typeof single> = [];
+			if (single.texture) {
+				candidates.push(single);
+			}
+			if (half.texture) {
+				candidates.push(half);
+			}
+			const result = [];
 
-				for (const candidate of candidates) {
-					let use = true;
-					const _ref1: Array<keyof typeof single> = spec.require;
+			for (let _j = 0, _len1 = candidates.length; _j < _len1; _j++) {
+				const candidate = candidates[_j];
+				let use = true;
+				const _ref1 = spec.require;
 
-					for (const name of _ref1) {
-						if (candidate[name] === false) {
-							use = false;
-						}
-					}
-					if (use) {
-						result.push(candidate);
+				for (let _k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+					const name = _ref1[_k] as keyof typeof single;
+					if (candidate[name] === false) {
+						use = false;
 					}
 				}
+				if (use) {
+					result.push(candidate);
+				}
+			}
 
-				for (const [j, candidate] of result.entries()) {
-					const _ref2: Array<keyof typeof single> = spec.prefer;
+			for (let _l = 0, _len3 = result.length; _l < _len3; _l++) {
+				const candidate = result[_l];
+				const _ref2 = spec.prefer;
 
-					for (const [i, preference] of _ref2.entries()) {
-						const importance = Math.pow(2, spec.prefer.length - i - 1);
-						if (candidate[preference]) {
-							candidate.score += importance;
-							result[j] = candidate;
-						}
+				let _m;
+				for (let i = (_m = 0), _len4 = _ref2.length; _m < _len4; i = ++_m) {
+					const preference = _ref2[i] as keyof typeof single;
+					const importance = Math.pow(2, spec.prefer.length - i - 1);
+
+					if (candidate[preference]) {
+						candidate.score += importance;
 					}
 				}
+			}
 
-				result.sort((a, b) =>
-					a.score === b.score ? 0 : a.score < b.score ? 1 : -1
-				);
-
-				if (!result.length) {
-					if (spec.throws) {
-						throw (
-							"No floating point texture support that is " +
-							spec.require.join(", ")
-						);
-					} else {
-						return null;
-					}
+			result.sort((a, b) => {
+				if (a.score === b.score) {
+					return 0;
+				} else if (a.score < b.score) {
+					return 1;
 				} else {
-					const finalResult = result[0];
-					return {
-						filterable: finalResult.filterable,
-						renderable: finalResult.renderable,
-						type: finalResult.type,
-						precision: finalResult.precision,
-						score: finalResult.score,
-					};
+					return -1;
 				}
 			});
+
+			if (result.length === 0) {
+				if (spec.throws) {
+					throw (
+						"No floating point texture support that is " +
+						spec.require.join(", ")
+					);
+				} else {
+					return null;
+				}
+			} else {
+				const chosenResult = result[0];
+				return {
+					filterable: chosenResult.filterable,
+					renderable: chosenResult.renderable,
+					type: chosenResult.type,
+					precision: chosenResult.precision,
+					score: chosenResult.score,
+				};
+			}
+		});
 	}
 }
