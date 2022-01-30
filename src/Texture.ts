@@ -17,24 +17,14 @@ export default class Texture {
 			params = {};
 		}
 
-		let _ref = params.channels;
-		let _ref1 = params.type;
-		this.channels = this.gl[
-			(_ref != null
-				? _ref
-				: "rgba"
-			).toUpperCase() as keyof WebGLRenderingContextBase
-		] as number;
+		const ref = (params.channels ?? "rgba").toUpperCase();
+		this.channels = this.gl[ref as keyof WebGLRenderingContextBase] as number;
 
 		if (typeof params.type === "number") {
 			this.type = params.type;
 		} else {
-			this.type = this.gl[
-				(_ref1 != null
-					? `${_ref1}`
-					: "unsigned_byte"
-				).toUpperCase() as keyof WebGLRenderingContextBase
-			] as number;
+			const ref1 = `${params.type ?? "unsigned_byte"}`.toUpperCase();
+			this.type = this.gl[ref1 as keyof WebGLRenderingContextBase] as number;
 		}
 
 		switch (this.channels) {

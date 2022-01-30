@@ -13,7 +13,7 @@ export default class WebGLHeatmap {
 	private heights: Heights;
 	private gradientTexture: Texture | undefined;
 
-	constructor(_opt: WebGLHeatmapOptions = {}) {
+	constructor(options: WebGLHeatmapOptions = {}) {
 		let alphaEnd,
 			alphaRange,
 			alphaStart,
@@ -25,25 +25,18 @@ export default class WebGLHeatmap {
 			quad,
 			textureGradient: Texture | null;
 
-		this.canvas = _opt.canvas || document.createElement("canvas");
-		this.width = _opt.width || this.canvas.offsetWidth || 2;
-		this.height = _opt.height || this.canvas.offsetHeight || 2;
-		intensityToAlpha = _opt.intensityToAlpha;
-		const gradientTexture = _opt.gradientTexture as string | TexImageSource;
-		alphaRange = _opt.alphaRange;
+		this.canvas = options.canvas || document.createElement("canvas");
+		this.width = options.width || this.canvas.offsetWidth || 2;
+		this.height = options.height || this.canvas.offsetHeight || 2;
+		intensityToAlpha = options.intensityToAlpha;
+		const gradientTexture = options.gradientTexture as string | TexImageSource;
+		alphaRange = options.alphaRange;
 
 		try {
 			this.gl = this.canvas.getContext("webgl", {
 				depth: false,
 				antialias: false,
 			});
-
-			if (this.gl === null) {
-				this.gl = this.canvas.getContext("webgl", {
-					depth: false,
-					antialias: false,
-				});
-			}
 		} catch (_error) {
 			error = _error;
 			throw "WebGL not supported";
@@ -113,9 +106,9 @@ export default class WebGLHeatmap {
 			intensityToAlpha = true;
 		}
 		if (intensityToAlpha) {
-			const _ref1 = alphaRange != null ? alphaRange : [0, 1];
-			alphaStart = _ref1[0];
-			alphaEnd = _ref1[1];
+			const ref1 = alphaRange ?? [0, 1];
+			alphaStart = ref1[0];
+			alphaEnd = ref1[1];
 
 			output =
 				"vec4 alphaFun(vec3 color, float intensity){\n    float alpha = smoothstep(" +
@@ -192,19 +185,14 @@ export default class WebGLHeatmap {
 	}
 
 	clamp(min: number | null, max: number | null) {
-		if (min == null) {
-			min = 0;
-		}
-		if (max == null) {
-			max = 1;
-		}
+		if (min == null) min = 0;
+		if (max == null) max = 1;
+
 		return this.heights.clamp(min, max);
 	}
 
 	multiply(value: number | null) {
-		if (value == null) {
-			value = 0.95;
-		}
+		if (value == null) value = 0.95;
 		return this.heights.multiply(value);
 	}
 
@@ -222,12 +210,11 @@ export default class WebGLHeatmap {
 	}
 
 	addPoints(items: HeatPoint[]) {
-		let item;
-		const _results = [];
-		for (let _i = 0, _len = items.length; _i < _len; _i++) {
-			item = items[_i];
-			_results.push(this.addPoint(item.x, item.y, item.size, item.intensity));
+		const results = [];
+		for (const item of items) {
+			const result = this.addPoint(item.x, item.y, item.size, item.intensity);
+			results.push(result);
 		}
-		return _results;
+		return results;
 	}
 }

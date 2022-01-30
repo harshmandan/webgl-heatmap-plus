@@ -6,7 +6,6 @@ export default function nukeVendorPrefix() {
 
 	const vendors = ["WEBKIT", "MOZ", "MS", "O"];
 	const vendorRe = /^WEBKIT_(.*)|MOZ_(.*)|MS_(.*)|O_(.*)/;
-
 	const getExtension = WebGLRenderingContext.prototype.getExtension;
 
 	WebGLRenderingContext.prototype.getExtension = function (name) {

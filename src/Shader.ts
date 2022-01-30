@@ -8,7 +8,7 @@ export default class Shader {
 
 	constructor(
 		private gl: WebGLRenderingContext,
-		options: { vertex: any; fragment: any }
+		options: { vertex: string; fragment: string }
 	) {
 		this.program = this.gl.createProgram();
 		this.vs = this.gl.createShader(this.gl.VERTEX_SHADER);
@@ -35,10 +35,8 @@ export default class Shader {
 	attribLocation(name: string) {
 		let location = this.attribCache[name];
 		if (this.program && typeof location === "undefined") {
-			location = this.attribCache[name] = this.gl.getAttribLocation(
-				this.program,
-				name
-			);
+			location = this.gl.getAttribLocation(this.program, name);
+			this.attribCache[name] = location;
 		}
 		return location;
 	}
