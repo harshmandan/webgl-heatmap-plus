@@ -9,3 +9,9 @@ export default function createWebGLHeatmap(options: WebGLHeatmapOptions) {
 
 	return new WebGLHeatmap(options);
 }
+
+if (typeof window !== "undefined") {
+	window.createWebGLHeatmap = createWebGLHeatmap;
+}
+
+export type CreateWebGLHeatmap = typeof createWebGLHeatmap;
