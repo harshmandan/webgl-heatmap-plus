@@ -1,5 +1,22 @@
+<script lang="ts" context="module">
+	function isVideo(el: HTMLElement | undefined): el is HTMLVideoElement {
+		return el?.tagName.toLowerCase() === 'mux-video';
+	}
+</script>
+
 <script lang="ts">
 	import '@mux-elements/mux-video';
+
+	export let duration: number | undefined;
+	export let currentTime: number | undefined;
+
+	let videoEl: HTMLElement | HTMLVideoElement | undefined;
+	const onloadedmetadata = () => {
+		if (isVideo(videoEl)) duration = videoEl.duration;
+	};
+	const ontimeupdate = () => {
+		if (isVideo(videoEl)) currentTime = videoEl.currentTime;
+	};
 </script>
 
 <mux-video
@@ -9,6 +26,9 @@
 	playsinline
 	stream-type="on-demand"
 	prefer-mse
+	on:loadedmetadata={onloadedmetadata}
+	on:timeupdate={ontimeupdate}
+	bind:this={videoEl}
 />
 
 <style>
