@@ -1,10 +1,16 @@
 <script lang="ts">
+	import { browser } from '$app/env';
 	import MuxVideo from '$lib/components/MuxVideo.svelte';
+
+	let duration = 0;
+	let currentTime = 0;
 </script>
 
-<div>
-	<MuxVideo />
-</div>
+{#if browser}
+	<div>
+		<MuxVideo bind:duration bind:currentTime />
+	</div>
+{/if}
 
 <style>
 	div {
