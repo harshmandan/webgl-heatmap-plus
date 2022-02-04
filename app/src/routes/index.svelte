@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/env';
 	import MuxVideo from '$lib/components/MuxVideo.svelte';
+	import Heatmap from '$lib/components/Heatmap.svelte';
 
 	let duration = 0;
 	let currentTime = 0;
@@ -9,6 +10,7 @@
 {#if browser}
 	<div>
 		<MuxVideo bind:duration bind:currentTime />
+		<Heatmap videoDuration={duration} videoTime={currentTime} />
 	</div>
 {/if}
 
