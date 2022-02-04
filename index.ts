@@ -15,3 +15,4 @@ if (typeof window !== "undefined") {
 }
 
 export type CreateWebGLHeatmap = typeof createWebGLHeatmap;
+export { type WebGLHeatmap };
