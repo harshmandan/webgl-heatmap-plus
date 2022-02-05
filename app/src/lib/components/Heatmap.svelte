@@ -5,6 +5,8 @@
 
 	export let videoDuration: number = 60;
 	export let videoTime: number = 0;
+	export let videoWidth: number = 0;
+	export let videoHeight: number = 0;
 
 	let canvasEl: HTMLCanvasElement | undefined;
 	let heatmap: WebGLHeatmap | null = null;
@@ -23,20 +25,24 @@
 		}
 	});
 
-	$: heatpoints = videoDuration && generateHeatPoints(videoDuration);
+	$: metadataloaded = videoDuration * videoWidth * videoHeight;
+	$: heatpoints = metadataloaded && generateHeatPoints(videoDuration, videoWidth, videoHeight);
 	$: if (heatpoints) {
 		const points = heatpoints[Math.floor(videoTime)];
 		const SIZE = 100;
 		const INTENSITY = SIZE / 100;
 
+		heatmap.multiply(0.85);
+
 		if (points && heatmap) {
-			heatmap.multiply(0.85);
+			heatmap.blur();
 			for (const point of points) {
 				heatmap.addPoint(point.x, point.y, SIZE, INTENSITY);
 			}
-			heatmap.update();
-			heatmap.display();
 		}
+
+		heatmap.update();
+		heatmap.display();
 	}
 </script>
 

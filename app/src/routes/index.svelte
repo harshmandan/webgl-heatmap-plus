@@ -5,12 +5,14 @@
 
 	let duration = 0;
 	let currentTime = 0;
+	let videoWidth = 0;
+	let videoHeight = 0;
 </script>
 
 {#if browser}
 	<div>
-		<MuxVideo bind:duration bind:currentTime />
-		<Heatmap videoDuration={duration} videoTime={currentTime} />
+		<MuxVideo bind:duration bind:currentTime bind:videoWidth bind:videoHeight />
+		<Heatmap videoDuration={duration} videoTime={currentTime} {videoWidth} {videoHeight} />
 	</div>
 {/if}
 

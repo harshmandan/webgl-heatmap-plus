@@ -9,10 +9,16 @@
 
 	export let duration: number | undefined;
 	export let currentTime: number | undefined;
+	export let videoWidth: number | undefined;
+	export let videoHeight: number | undefined;
 
 	let videoEl: HTMLElement | HTMLVideoElement | undefined;
 	const onloadedmetadata = () => {
-		if (isVideo(videoEl)) duration = videoEl.duration;
+		if (isVideo(videoEl)) {
+			duration = videoEl.duration;
+			videoWidth = videoEl.videoWidth;
+			videoHeight = videoEl.videoHeight;
+		}
 	};
 	const ontimeupdate = () => {
 		if (isVideo(videoEl)) currentTime = videoEl.currentTime;
