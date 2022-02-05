@@ -9,7 +9,7 @@ An optimization of [Florian Boesch's](https://github.com/pyalot) [WebGL Heatmap 
 3. Rewrite it in Typescript
 4. Eventually upgrade to WebGL 2
 
-See [demo here](https://webgl-heatmap-plus-nj7au2ixh-nwaughachukwuma.vercel.app/)
+See [demo here](https://webgl-heatmap-plus.vercel.app/)
 
 ## Installation
 
