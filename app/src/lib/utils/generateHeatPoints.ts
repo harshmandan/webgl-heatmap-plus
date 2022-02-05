@@ -20,14 +20,14 @@ const generateHeatPoints = (duration: number, videoWidth = 0, videoHeight = 0) =
 	};
 
 	const points: Record<Second, Point[]> = {};
-	const numPoints = Math.floor(Math.PI ** 2 * duration);
+	const numPoints = Math.floor(Math.PI * duration);
 	const radius = Math.min(center.x, center.y);
 	const angleStep = (2 * Math.PI) / numPoints;
 
 	for (let i = 0; i < numPoints; i++) {
 		const angle = i * angleStep;
-		const x = center.x + radius * Math.cos(angle);
-		const y = center.y + radius * Math.sin(angle);
+		const x = center.x + Math.random() * radius * Math.cos(angle);
+		const y = center.y + Math.random() * radius * Math.sin(angle);
 
 		const randSec = Math.floor(Math.random() * duration);
 
