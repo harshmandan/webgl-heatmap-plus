@@ -10,6 +10,8 @@
 
 	let canvasEl: HTMLCanvasElement | undefined;
 	let heatmap: WebGLHeatmap | null = null;
+	const SIZE = 100;
+	const INTENSITY = SIZE / 100;
 
 	onMount(() => {
 		try {
@@ -27,22 +29,21 @@
 
 	$: metadataloaded = videoDuration * videoWidth * videoHeight;
 	$: heatpoints = metadataloaded && generateHeatPoints(videoDuration, videoWidth, videoHeight);
+	$: xFactor = heatmap ? heatmap.width / videoWidth : 0;
+	$: yFactor = heatmap ? heatmap.height / videoHeight : 0;
 	$: if (heatpoints) {
 		const points = heatpoints[Math.floor(videoTime)];
-		const SIZE = 100;
-		const INTENSITY = SIZE / 100;
-
-		heatmap.multiply(0.85);
-
 		if (points && heatmap) {
+			heatmap.multiply(0.85);
 			heatmap.blur();
-			for (const point of points) {
-				heatmap.addPoint(point.x, point.y, SIZE, INTENSITY);
-			}
-		}
 
-		heatmap.update();
-		heatmap.display();
+			for (const point of points) {
+				heatmap.addPoint(point.x * xFactor, point.y * yFactor, SIZE, INTENSITY);
+			}
+
+			heatmap.update();
+			heatmap.display();
+		}
 	}
 </script>
 
