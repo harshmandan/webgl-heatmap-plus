@@ -1,42 +1,40 @@
 type Second = number;
 type Point = { x: number; y: number };
 
-const areaOfEllipse = (width: number, height: number) => (Math.PI * width * height) / 4;
-const getRandomPointY = (area: number, width: number) => Math.random() * (area / (Math.PI * width));
-
 /**
  * generates random (x, y) points for a video layout
  * - layout is a rectangle of video width X height
- * - function should return an array of points
+ * - function should return an object
+ * - object should have the shape Record<Second, Point[]>
+ * - where key Second is a random seconds generated from duration,
+ * - and values Point[] am array of random points
  * - points should be evenly distributed within an elliptical shape
  * - ellipse should be centered on the screen
  */
 const generateHeatPoints = (duration: number, videoWidth = 0, videoHeight = 0) => {
+	const width = Math.min(videoWidth || window.innerWidth);
+	const height = Math.min(videoHeight || window.innerHeight);
+	const center = {
+		x: width / 2,
+		y: height / 2
+	};
+
 	const points: Record<Second, Point[]> = {};
+	const numPoints = Math.floor(Math.PI * duration);
+	const radius = Math.min(center.x, center.y);
+	const angleStep = (2 * Math.PI) / numPoints;
 
-	const width = videoWidth;
-	const height = videoHeight;
+	for (let i = 0; i < numPoints; i++) {
+		const angle = i * angleStep;
+		const x = center.x + Math.random() * radius * Math.cos(angle);
+		const y = center.y + Math.random() * radius * Math.sin(angle);
 
-	const numPoints = width * height;
-	const step = Math.floor(numPoints / (duration + width));
-	let i = 0;
-
-	const shortestDim = Math.min(width, height);
-	const newWidth = Math.floor(shortestDim + (width - shortestDim) / 2);
-	const newHeight = Math.floor(shortestDim + (height - shortestDim) / 2);
-	const videoEllipse = areaOfEllipse(newWidth, newHeight);
-
-	while (i < numPoints) {
-		const x = Math.floor(Math.random() * newWidth);
-		const y = getRandomPointY(videoEllipse, x);
 		const randSec = Math.floor(Math.random() * duration);
 
 		if (!points[randSec]) {
 			points[randSec] = [];
 		}
 		points[randSec].push({ x, y });
-
-		i += step;
 	}
 
 	return points;
