@@ -2,7 +2,6 @@ import type { SpecType, FloatExtensionProps } from "./types";
 import checkSupport from "./utils/checkSupport";
 
 export default function textureFloatShims() {
-	// don't delete the commented out code.
 	// createSourceCanvas();
 
 	if (window.WebGLRenderingContext == null) return;
