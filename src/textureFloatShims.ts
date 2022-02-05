@@ -131,15 +131,7 @@ export default function textureFloatShims() {
 			a.score === b.score ? 0 : a.score < b.score ? 1 : -1
 		);
 
-		if (!result.length) {
-			if (spec.throws) {
-				throw (
-					"No floating point texture support that is " + spec.require.join(", ")
-				);
-			} else {
-				return null;
-			}
-		} else {
+		if (result.length) {
 			const finalResult = result[0];
 			return {
 				filterable: finalResult.filterable,
@@ -149,5 +141,13 @@ export default function textureFloatShims() {
 				score: finalResult.score,
 			};
 		}
+
+		if (spec.throws) {
+			throw (
+				"No floating point texture support that is " + spec.require.join(", ")
+			);
+		}
+
+		return null;
 	});
 }
