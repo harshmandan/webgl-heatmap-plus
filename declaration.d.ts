@@ -1,4 +1,5 @@
 import type { SpecType, FloatExtensionProps } from "./src/types";
+import type { CreateWebGLHeatmap } from "./index";
 
 declare global {
 	interface WebGLRenderingContext {
@@ -6,5 +7,6 @@ declare global {
 	}
 	interface Window {
 		WebGLDebugUtils: any;
+		createWebGLHeatmap: CreateWebGLHeatmap;
 	}
 }

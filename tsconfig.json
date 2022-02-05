@@ -13,5 +13,5 @@
 		"checkJs": true
 	},
 	"include": ["index.ts", "src", "**/*.d.ts"],
-	"exclude": ["node_modules", "lib"]
+	"exclude": ["node_modules", "lib", "app"]
 }
