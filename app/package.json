@@ -30,6 +30,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@mux-elements/mux-video": "^0.2.2"
+		"@mux-elements/mux-video": "^0.2.2",
+		"webgl-heatmap-plus": "^0.0.11"
 	}
 }

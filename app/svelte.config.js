@@ -1,6 +1,7 @@
 import adapterAuto from '@sveltejs/adapter-auto';
 import adapterVercel from '@sveltejs/adapter-vercel';
 import preprocess from 'svelte-preprocess';
+import { resolve } from 'path';
 
 // is production
 const prod = process.env.NODE_ENV === 'production';
@@ -12,7 +13,20 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter: prod ? adapterVercel() : adapterAuto()
+		adapter: prod
+			? adapterVercel({
+					external: ['webgl-heatmap-plus']
+			  })
+			: adapterAuto(),
+		vite: {
+			resolve: {
+				alias: {
+					'webgl-heatmap-plus': prod
+						? resolve('./node_modules/webgl-heatmap-plus')
+						: resolve('../lib')
+				}
+			}
+		}
 	}
 };
 

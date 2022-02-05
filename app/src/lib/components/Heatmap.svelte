@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import generateHeatPoints from '$lib/utils/generateHeatPoints';
-	import createWebGLHeatmap, { type WebGLHeatmap } from '../../../../lib/';
+	import createWebGLHeatmap, { type WebGLHeatmap } from 'webgl-heatmap-plus';
 
 	export let videoDuration: number = 60;
 	export let videoTime: number = 0;
