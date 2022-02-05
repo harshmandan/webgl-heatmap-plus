@@ -1,5 +1,9 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapterAuto from '@sveltejs/adapter-auto';
+import adapterVercel from '@sveltejs/adapter-vercel';
 import preprocess from 'svelte-preprocess';
+
+// is production
+const prod = process.env.NODE_ENV === 'production';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -8,7 +12,7 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter: adapter()
+		adapter: prod ? adapterVercel() : adapterAuto()
 	}
 };
 
