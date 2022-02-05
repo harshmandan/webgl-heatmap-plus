@@ -1,12 +1,17 @@
-// create a function that generates random (x, y) points for a screen layout
-// the screen layout is a rectangle with a width and height
-// the function should return an array of points
-// the points should be evenly distributed across the screen
-
 type Second = number;
 type Point = { x: number; y: number };
-const BUFFER = 50;
-export default function generateHeatPoints(duration: number, videoWidth = 0, videoHeight = 0) {
+
+const areaOfEllipse = (width: number, height: number) => (Math.PI * width * height) / 4;
+const getRandomPointY = (area: number, width: number) => Math.random() * (area / (Math.PI * width));
+
+/**
+ * generates random (x, y) points for a video layout
+ * - layout is a rectangle of video width X height
+ * - function should return an array of points
+ * - points should be evenly distributed within an elliptical shape
+ * - ellipse should be centered on the screen
+ */
+const generateHeatPoints = (duration: number, videoWidth = 0, videoHeight = 0) => {
 	const points: Record<Second, Point[]> = {};
 
 	const width = videoWidth;
@@ -16,9 +21,14 @@ export default function generateHeatPoints(duration: number, videoWidth = 0, vid
 	const step = Math.floor(numPoints / (duration + width));
 	let i = 0;
 
+	const shortestDim = Math.min(width, height);
+	const newWidth = Math.floor(shortestDim + (width - shortestDim) / 2);
+	const newHeight = Math.floor(shortestDim + (height - shortestDim) / 2);
+	const videoEllipse = areaOfEllipse(newWidth, newHeight);
+
 	while (i < numPoints) {
-		const x = Math.floor(Math.random() * width - BUFFER);
-		const y = Math.floor(Math.random() * height - BUFFER);
+		const x = Math.floor(Math.random() * newWidth);
+		const y = getRandomPointY(videoEllipse, x);
 		const randSec = Math.floor(Math.random() * duration);
 
 		if (!points[randSec]) {
@@ -30,4 +40,6 @@ export default function generateHeatPoints(duration: number, videoWidth = 0, vid
 	}
 
 	return points;
-}
+};
+
+export default generateHeatPoints;
