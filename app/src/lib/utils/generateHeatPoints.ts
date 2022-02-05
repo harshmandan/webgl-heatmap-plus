@@ -5,19 +5,20 @@
 
 type Second = number;
 type Point = { x: number; y: number };
-export default function generateHeatPoints(duration: number) {
+const BUFFER = 50;
+export default function generateHeatPoints(duration: number, videoWidth = 0, videoHeight = 0) {
 	const points: Record<Second, Point[]> = {};
 
-	const width = window.innerWidth;
-	const height = window.innerHeight;
+	const width = videoWidth;
+	const height = videoHeight;
 
 	const numPoints = width * height;
-	const step = Math.floor(numPoints / Math.min(60, duration));
+	const step = Math.floor(numPoints / (duration + width));
 	let i = 0;
 
 	while (i < numPoints) {
-		const x = Math.floor(Math.random() * width);
-		const y = Math.floor(Math.random() * height);
+		const x = Math.floor(Math.random() * width - BUFFER);
+		const y = Math.floor(Math.random() * height - BUFFER);
 		const randSec = Math.floor(Math.random() * duration);
 
 		if (!points[randSec]) {
