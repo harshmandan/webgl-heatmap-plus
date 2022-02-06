@@ -4,11 +4,11 @@ on:
   pull_request:
     paths:
       - "demo/**"
-      - ./.github/workflows/check_demo.yml
+      - ".github/workflows/check_demo.yml"
   push:
     paths:
       - "demo/**"
-      - ./.github/workflows/check_demo.yml
+      - ".github/workflows/check_demo.yml"
 defaults:
   run:
     working-directory: ./demo
