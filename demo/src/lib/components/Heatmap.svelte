@@ -3,10 +3,10 @@
 	import generateHeatPoints from '$lib/utils/generateHeatPoints';
 	import createWebGLHeatmap, { type WebGLHeatmap } from 'webgl-heatmap-plus';
 
-	export let videoDuration: number = 60;
-	export let videoTime: number = 0;
-	export let videoWidth: number = 0;
-	export let videoHeight: number = 0;
+	export let videoDuration = 60;
+	export let videoTime = 0;
+	export let videoWidth = 0;
+	export let videoHeight = 0;
 
 	let canvasEl: HTMLCanvasElement | undefined;
 	let heatmap: WebGLHeatmap | null = null;
