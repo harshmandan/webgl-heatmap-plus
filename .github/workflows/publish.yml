@@ -31,8 +31,6 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: npm run test
-      - run: npm run lint && npm run check
-        working-directory: ./demo
       - uses: heinrichreimer/github-changelog-generator-action@v2.3
         if: matrix.node-version == 12
         with:
