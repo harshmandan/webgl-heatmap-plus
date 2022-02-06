@@ -2,15 +2,13 @@ name: Check demo
 on:
   workflow_dispatch:
   pull_request:
-    branches:
-      - main
     paths:
       - "demo/**"
+      - ./.github/workflows/check_demo.yml
   push:
-    branches:
-      - main
     paths:
       - "demo/**"
+      - ./.github/workflows/check_demo.yml
 defaults:
   run:
     working-directory: ./demo
