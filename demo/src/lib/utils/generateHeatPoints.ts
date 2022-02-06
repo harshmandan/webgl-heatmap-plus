@@ -12,8 +12,8 @@ type Point = { x: number; y: number };
  * - ellipse should be centered on the screen
  */
 const generateHeatPoints = (duration: number, videoWidth = 0, videoHeight = 0) => {
-	const width = Math.min(videoWidth || window.innerWidth);
-	const height = Math.min(videoHeight || window.innerHeight);
+	const width = Math.min(videoWidth, window.innerWidth);
+	const height = Math.min(videoHeight, window.innerHeight);
 	const center = {
 		x: width / 2,
 		y: height / 2
@@ -26,8 +26,11 @@ const generateHeatPoints = (duration: number, videoWidth = 0, videoHeight = 0) =
 
 	for (let i = 0; i < numPoints; i++) {
 		const angle = i * angleStep;
-		const x = center.x + Math.random() * radius * Math.cos(angle);
-		const y = center.y + Math.random() * radius * Math.sin(angle);
+		const px = center.x + Math.random() * radius * Math.cos(angle);
+		const py = center.y + Math.random() * radius * Math.sin(angle);
+		// get x, y as percentage of video/screen dimensions
+		const x = px / width;
+		const y = py / height;
 
 		const randSec = Math.floor(Math.random() * duration);
 

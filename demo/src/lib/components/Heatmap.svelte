@@ -29,16 +29,15 @@
 
 	$: metadataloaded = videoDuration * videoWidth * videoHeight;
 	$: heatpoints = metadataloaded && generateHeatPoints(videoDuration, videoWidth, videoHeight);
-	$: xFactor = heatmap ? heatmap.width / videoWidth : 0;
-	$: yFactor = heatmap ? heatmap.height / videoHeight : 0;
 	$: if (heatpoints) {
 		const points = heatpoints[Math.floor(videoTime)];
 		if (points && heatmap) {
 			heatmap.multiply(0.85);
 			heatmap.blur();
+			const { width, height } = heatmap;
 
 			for (const point of points) {
-				heatmap.addPoint(point.x * xFactor, point.y * yFactor, SIZE, INTENSITY);
+				heatmap.addPoint(point.x * width, point.y * height, SIZE, INTENSITY);
 			}
 
 			heatmap.update();
