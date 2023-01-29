@@ -143,7 +143,6 @@ export default class WebGLHeatmap {
 
 		this.gl.bufferData(this.gl.ARRAY_BUFFER, quad, this.gl.STATIC_DRAW);
 		this.gl.bindBuffer(this.gl.ARRAY_BUFFER, null);
-
 		this.heights = new Heights(this, this.gl, this.width, this.height);
 	}
 
@@ -187,7 +186,6 @@ export default class WebGLHeatmap {
 	clamp(min: number | null, max: number | null) {
 		if (min == null) min = 0;
 		if (max == null) max = 1;
-
 		return this.heights.clamp(min, max);
 	}
 

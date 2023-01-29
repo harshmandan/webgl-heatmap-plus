@@ -3,7 +3,6 @@ import checkSupport from "./utils/checkSupport";
 
 export default function textureFloatShims() {
 	// createSourceCanvas();
-
 	if (window.WebGLRenderingContext == null) return;
 
 	const supported = checkSupport();

@@ -13,17 +13,18 @@
 	"types": "lib/index.d.ts",
 	"sideEffects": false,
 	"scripts": {
-		"build": "tsc && tsup",
+		"tsc": "tsc",
+		"build": "tsup",
 		"prepare": "husky install",
 		"pretty-quick": "pretty-quick --staged",
-		"tsc": "tsc",
 		"test": "tsd && ava"
 	},
 	"exports": {
 		".": {
 			"import": "./lib/index.js",
 			"require": "./lib/index.cjs"
-		}
+		},
+		"./package.json": "./package.json"
 	},
 	"files": [
 		"lib"

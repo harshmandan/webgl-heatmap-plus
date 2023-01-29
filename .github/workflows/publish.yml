@@ -29,6 +29,8 @@ jobs:
             **/node_modules
           key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
       - run: npm install
+      - run: npm run lint && npm run check
+      - run: npm run tsc
       - run: npm run build
       - run: npm run test
       - uses: heinrichreimer/github-changelog-generator-action@v2.3

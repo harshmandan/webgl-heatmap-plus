@@ -29,4 +29,5 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
       - run: npm install
       - run: npm run lint && npm run check
+      - run: npm run tsc
       - run: npm run build
