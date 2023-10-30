@@ -21,17 +21,38 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - uses: actions/cache@v2
+      
+      - uses: actions/cache@v3
         id: cache-deps
         with:
           path: |
             **/node_modules
-          key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/package-lock.json') }}
-      - run: npm install
-      - run: npm run lint && npm run check
-      - run: npm run tsc
-      - run: npm run build
-      - run: npm run test
+          key: ${{ runner.os }}-${{ matrix.node-version }}-modules-${{ hashFiles('**/yarn.lock') }}
+      
+      - uses: borales/actions-yarn@v4
+        with:
+          cmd: install
+
+      - uses: borales/actions-yarn@v4
+        with:
+          cmd: lint
+
+      - uses: borales/actions-yarn@v4
+        with:
+          cmd: check
+      
+      - uses: borales/actions-yarn@v4
+        with:
+          cmd: tsc
+
+      - uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+
+      - uses: borales/actions-yarn@v4
+        with:
+          cmd: test
+
       - uses: heinrichreimer/github-changelog-generator-action@v2.3
         if: matrix.node-version == 12
         with:
