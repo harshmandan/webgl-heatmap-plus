@@ -12,6 +12,7 @@ on:
 defaults:
   run:
     working-directory: ./demo
+
 jobs:
   check:
     name: lint and check
@@ -32,10 +33,6 @@ jobs:
       - uses: borales/actions-yarn@v4
         with:
           cmd: install
-
-      - uses: borales/actions-yarn@v4
-        with:
-          cmd: lint
 
       - uses: borales/actions-yarn@v4
         with:

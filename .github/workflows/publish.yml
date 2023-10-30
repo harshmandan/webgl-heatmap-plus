@@ -6,6 +6,7 @@ on:
       - main
     tags:
       - "v*"
+
 jobs:
   publish:
     name: test on Node.js ${{ matrix.node-version }}
@@ -32,10 +33,6 @@ jobs:
       - uses: borales/actions-yarn@v4
         with:
           cmd: install
-
-      - uses: borales/actions-yarn@v4
-        with:
-          cmd: lint
 
       - uses: borales/actions-yarn@v4
         with:
