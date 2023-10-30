@@ -36,6 +36,7 @@ export default class WebGLHeatmap {
 			this.gl = this.canvas.getContext("webgl", {
 				depth: false,
 				antialias: false,
+				preserveDrawingBuffer: true,
 			});
 		} catch (_error) {
 			error = _error;
